@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Calculator</title>
+    <style>
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,time,mark,audio,video { margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent; } 
+body { line-height:1; }
+ol,ul { list-style:none; }
+blockquote,q { quotes:none; }
+blockquote:before,blockquote:after,q:before,q:after { content:'';content:none; }
+ins { text-decoration:none; }
+del { text-decoration:line-through; }
+table { border-collapse:collapse;border-spacing:0; }
+
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+}
+
+.clearfix { display: inline-block; }
+
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+body {
+    color:#272b2e;
+    margin-top:70px;
+    font-weight:500;
+    background:#494f53;
+}
+
+a:link, a:active, a:visited {
+    color:#1ca49f;
+    text-decoration:none;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+.wrapper {
+    width:100%;
+    max-width:500px;
+    margin:0 auto;
+}
+
+p {
+    margin:10px 0 0 0;
+    font-size:12px;
+    color:#cfcfcf;
+}
+
+.calculator {
+    width:100%;
+    margin:0 auto;
+    background:#272b2e;
+    border-radius:8px;
+    padding:10px;
+    text-align:center;
+}
+
+.screen {
+    font-size:42px;
+    height:75px;
+    line-height:75px;
+    width:100%;
+    color:#fff;
+    background:#494f53;
+    text-align:right;
+    margin-bottom:10px;
+    border-radius:8px 8px 0 0;
+    padding-right:10px;
+    box-shadow:4px 4px 2px rgba(0,0,0, 0.25);
+    box-shadow:inset 1px 1px 2px rgba(0,0,0, 0.2);
+}
+
+.num {
+    display:inline-block;
+    min-width:22%;
+    height:100px;
+    box-shadow:5px 5px 1px rgba(0,0,0, 0.25);
+    color:#fff;
+    border-radius:8px;
+    margin:0 0 10px 0;
+    text-align:center;
+    font-size:32px;
+    padding-top:30px;
+    cursor:pointer;
+}
+
+.num:hover {
+    background:rgba(255,255,255, 0.04);
+}
+
+.num:active {
+    box-shadow:1px 1px 1px rgba(0,0,0, 0.25);
+}
+
+.operator, .equals, .clear {
+    display:inline-block;
+    min-width:22%;
+    height:100px;
+    color:#fff;
+    margin:0 0 10px 0px;
+    text-align:center;
+    box-shadow:5px 5px 1px rgba(0,0,0, 0.25);
+    font-size:32px;
+    padding-top:30px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.clear {
+    background:#1ca49f;
+}
+
+.operator:hover, .equals:hover, .clear:hover {
+    background:rgba(255,255,255, 0.04);
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="calculator">
+        <div class="screen"></div>
+
+        <div class="num">1</div>
+        <div class="num">2</div>
+        <div class="num">3</div>
+        <div class="operator">+</div>
+
+        <div class="num">4</div>
+        <div class="num">5</div>
+        <div class="num">6</div>
+        <div class="operator">-</div>
+
+        <div class="num">7</div>
+        <div class="num">8</div>
+        <div class="num">9</div>
+        <div class="operator">*</div>
+
+        <div class="num">0</div>
+        <div class="clear">C</div>
+        <div class="equals">=</div>
+        <div class="operator">/</div>
+    </div>
+    <p>Built by <a href="http://www.shawnkauffman.com/">Shawn Kauffman</a></p>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+
+function add(a,b) {
+    return a + b;
+}
+
+function multiply(a,b) {
+    return a * b;
+}
+
+function divide(a,b) {
+    return a / b;
+}
+
+function subtract(a,b) {
+    return a - b;
+}
+
+
+var operands = [];
+var operator;
+
+$(".screen").text("");
+
+$(".num").each(function() {
+    var selection = $(this).text();
+    $(this).click(function() {
+        $(".screen").append(selection);
+        operands.push(parseInt(selection));
+    });
+});
+
+$(".operator").each(function() {
+    var selection = $(this).text();
+    $(this).click(function() {
+        operator = selection;
+        $(".screen").append(operator);
+    });
+});
+
+$(".equals").click(function() {
+    switch (operator) {
+        case "+":
+            var res = add(operands[0], operands[1]);
+            $(".screen").text("").append(res);
+            operands = [];
+            operator = "";
+            break;
+
+        case "-":
+            var res = subtract(operands[0], operands[1]);
+            $(".screen").text("").append(res);
+            operands = [];
+            operator = "";
+            break;
+
+        case "*":
+            var res = multiply(operands[0], operands[1]);
+            $(".screen").text("").append(res);
+            operands = [];
+            operator = "";
+            break;
+
+        case "/":
+            var res = divide(operands[0], operands[1]);
+            $(".screen").text("").append(res);
+            operands = [];
+            operator = "";
+            break;
+    }
+});
+
+$(".clear").click(function() {
+    operands = [];
+    operator = "";
+    $(".screen").text("");
+});
+
+</script>
+
+</body>
+</html>
