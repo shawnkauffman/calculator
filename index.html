@@ -34,6 +34,7 @@ body {
     margin-top:70px;
     font-weight:500;
     background:#494f53;
+    font-family: helvetica, arial;
 }
 
 a:link, a:active, a:visited {
@@ -91,8 +92,9 @@ p {
     margin:0 0 10px 0;
     text-align:center;
     font-size:32px;
-    padding-top:30px;
+    padding-top:32px;
     cursor:pointer;
+    transition:.1s all ease;
 }
 
 .num:hover {
@@ -100,7 +102,7 @@ p {
 }
 
 .num:active {
-    box-shadow:1px 1px 1px rgba(0,0,0, 0.25);
+    box-shadow:0 0 0 rgba(0,0,0, 0.25);
 }
 
 .operator, .equals, .clear {
@@ -112,9 +114,10 @@ p {
     text-align:center;
     box-shadow:5px 5px 1px rgba(0,0,0, 0.25);
     font-size:32px;
-    padding-top:30px;
+    padding-top:32px;
     border-radius:8px;
     cursor:pointer;
+    transition:.1s all ease;
 }
 
 .clear {
@@ -123,6 +126,10 @@ p {
 
 .operator:hover, .equals:hover, .clear:hover {
     background:rgba(255,255,255, 0.04);
+}
+
+.operator:active, .equals:active, .clear:active {
+    box-shadow:0 0 0 rgba(0,0,0, 0.25);
 }
 
 </style>
@@ -160,23 +167,22 @@ p {
 <script>
 
 function add(a,b) {
-    return a + b;
+    return parseInt(a,10) + parseInt(b, 10);
 }
 
 function multiply(a,b) {
-    return a * b;
+    return parseInt(a,10) * parseInt(b, 10);
 }
 
 function divide(a,b) {
-    return a / b;
+    return parseInt(a,10) / parseInt(b, 10);
 }
 
 function subtract(a,b) {
-    return a - b;
+    return parseInt(a,10) - parseInt(b, 10);
 }
 
-
-var operands = [];
+var operands = ["", ""];
 var operator;
 
 $(".screen").text("");
@@ -185,7 +191,11 @@ $(".num").each(function() {
     var selection = $(this).text();
     $(this).click(function() {
         $(".screen").append(selection);
-        operands.push(parseInt(selection));
+        if (operator) {
+            operands[1] = operands[1] + selection;
+        } else {
+            operands[0] = operands[0] + selection;
+        }
     });
 });
 
@@ -202,35 +212,35 @@ $(".equals").click(function() {
         case "+":
             var res = add(operands[0], operands[1]);
             $(".screen").text("").append(res);
-            operands = [];
+            operands = ["", ""];
             operator = "";
             break;
 
         case "-":
             var res = subtract(operands[0], operands[1]);
             $(".screen").text("").append(res);
-            operands = [];
+            operands = ["", ""];
             operator = "";
             break;
 
         case "*":
             var res = multiply(operands[0], operands[1]);
             $(".screen").text("").append(res);
-            operands = [];
+            operands = ["", ""];
             operator = "";
             break;
 
         case "/":
             var res = divide(operands[0], operands[1]);
             $(".screen").text("").append(res);
-            operands = [];
+            operands = ["", ""];
             operator = "";
             break;
     }
 });
 
 $(".clear").click(function() {
-    operands = [];
+    operands = ["", ""];
     operator = "";
     $(".screen").text("");
 });
